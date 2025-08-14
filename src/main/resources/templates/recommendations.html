@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Book Recommendations</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="/">Book Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link text-white" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/available_books">Available Books</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/my_books">My Books</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/book_register">Register Book</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/recommendations">Recommendations</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h2 class="mb-4">Book Recommendations by Genre</h2>
+    <form th:action="@{/recommendations}" method="post">
+        <div class="mb-3">
+            <label for="genre" class="form-label">Select Genre</label>
+            <select class="form-select" id="genre" name="genre" required>
+                <option th:each="g : ${genres}" th:value="${g}" th:text="${g}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Show Recommendations</button>
+    </form>
+    <div th:if="${selectedGenre}">
+        <h3 class="mt-4">Recommendations for <span th:text="${selectedGenre}"></span></h3>
+        <div th:if="${aiResponse}" class="alert alert-info">
+            <strong>AI-Powered Recommendations (BookWiseAi):</strong>
+            <span th:text="${aiResponse}"></span>
+        </div>
+        <div th:if="${#lists.isEmpty(recommendedBooks)}">
+            <div class="alert alert-warning">No books found for this genre.</div>
+        </div>
+        <div th:unless="${#lists.isEmpty(recommendedBooks)}">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Genre</th>
+                        <th>Description</th>
+                        <th>Rating</th>
+                        <th>Buy / Add</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="b : ${recommendedBooks}">
+                        <td th:text="${b.id}"></td>
+                        <td th:text="${b.name}"></td>
+                        <td th:text="${b.author}"></td>
+                        <td th:text="${b.price}"></td>
+                        <td th:text="${b.genre}"></td>
+                        <td th:text="${b.description}"></td>
+                        <td th:text="${b.rating}"></td>
+                        <td>
+                            <a th:href="${b.buyingLink}" target="_blank" class="btn btn-success btn-sm">Buy Now</a>
+                            <a class="btn btn-secondary btn-sm mt-1" th:href="@{/mylist/{id}(id=${b.id})}">Add To Mybook</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

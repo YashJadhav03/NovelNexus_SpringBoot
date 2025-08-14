@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Language Support - NovelNexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .language-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #17a2b8;
+        }
+        .translated-content {
+            background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">
+                    <i class="fas fa-globe"></i> Multi-Language Support
+                </h1>
+                <p class="text-center text-muted mb-4">
+                    Powered by Google Gemini AI - Translate book content and get localized recommendations in multiple languages
+                </p>
+            </div>
+        </div>
+
+        <!-- Translation Form -->
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="language-card">
+                    <h3 class="mb-3">Translate Book Content</h3>
+                    <form th:action="@{/translate-book}" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="bookId" class="form-label">Select Book</label>
+                                    <select name="bookId" id="bookId" class="form-select" required>
+                                        <option value="">Choose a book...</option>
+                                        <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.name + ' by ' + book.author}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="targetLanguage" class="form-label">Target Language</label>
+                                    <select name="targetLanguage" id="targetLanguage" class="form-select" required>
+                                        <option value="">Choose language...</option>
+                                        <option value="Spanish">Spanish (Español)</option>
+                                        <option value="French">French (Français)</option>
+                                        <option value="German">German (Deutsch)</option>
+                                        <option value="Italian">Italian (Italiano)</option>
+                                        <option value="Portuguese">Portuguese (Português)</option>
+                                        <option value="Russian">Russian (Русский)</option>
+                                        <option value="Japanese">Japanese (日本語)</option>
+                                        <option value="Korean">Korean (한국어)</option>
+                                        <option value="Chinese">Chinese (中文)</option>
+                                        <option value="Arabic">Arabic (العربية)</option>
+                                        <option value="Hindi">Hindi (हिन्दी)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info w-100">
+                            <i class="fas fa-language"></i> Translate Content
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Translated Content Display -->
+        <div th:if="${translatedContent}" class="row">
+            <div class="col-12">
+                <div class="translated-content">
+                    <h4><i class="fas fa-language"></i> Translated Content</h4>
+                    <div class="mb-3">
+                        <strong>Book:</strong> <span th:text="${book.name + ' by ' + book.author}"></span><br>
+                        <strong>Target Language:</strong> <span th:text="${targetLanguage}"></span>
+                    </div>
+                    <p th:text="${translatedContent}" style="white-space: pre-line;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Multi-Language Features</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="language-card text-center">
+                            <div class="feature-icon text-info">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <h5>Book Translation</h5>
+                            <p class="text-muted">Translate book titles, descriptions, and content into multiple languages while preserving meaning and style.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="language-card text-center">
+                            <div class="feature-icon text-success">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h5>Multi-Language Search</h5>
+                            <p class="text-muted">Search for books in different languages and find content that matches your language preferences.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="language-card text-center">
+                            <div class="feature-icon text-warning">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h5>Localized Recommendations</h5>
+                            <p class="text-muted">Get book recommendations tailored to specific regions and cultural preferences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supported Languages -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="language-card">
+                    <h4 class="text-center mb-4">Supported Languages</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Spanish (Español)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>French (Français)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>German (Deutsch)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Italian (Italiano)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Portuguese (Português)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Russian (Русский)</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Japanese (日本語)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Korean (한국어)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Chinese (中文)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Arabic (العربية)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Hindi (हिन्दी)</li>
+                                <li class="mb-2"><i class="fas fa-plus text-info me-2"></i>And many more...</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="language-card">
+                    <h4 class="text-center mb-4">Benefits of Multi-Language Support</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-globe text-info me-2"></i>Global accessibility</li>
+                                <li class="mb-2"><i class="fas fa-users text-info me-2"></i>Broader audience reach</li>
+                                <li class="mb-2"><i class="fas fa-culture text-info me-2"></i>Cultural diversity</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-graduation-cap text-info me-2"></i>Language learning support</li>
+                                <li class="mb-2"><i class="fas fa-search text-info me-2"></i>Enhanced search capabilities</li>
+                                <li class="mb-2"><i class="fas fa-heart text-info me-2"></i>Personalized experience</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="/" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/advanced-recommendations" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-brain"></i> AI Recommendations
+                </a>
+                <a href="/content-generation" class="btn btn-outline-success me-2">
+                    <i class="fas fa-magic"></i> Content Generation
+                </a>
+                <a href="/smart-search" class="btn btn-outline-warning">
+                    <i class="fas fa-search"></i> Smart Search
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html> 

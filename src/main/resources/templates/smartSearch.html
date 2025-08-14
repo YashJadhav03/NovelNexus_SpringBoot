@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Search - NovelNexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .search-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #ffc107;
+        }
+        .search-results {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">
+                    <i class="fas fa-search"></i> Smart Search
+                </h1>
+                <p class="text-center text-muted mb-4">
+                    Powered by Google Gemini AI - Find books using semantic search, fuzzy matching, and AI-powered suggestions
+                </p>
+            </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="search-card">
+                    <h3 class="mb-3">Semantic Search</h3>
+                    <form th:action="@{/semantic-search}" method="post">
+                        <div class="input-group mb-3">
+                            <input type="text" name="query" class="form-control" placeholder="Search for books by theme, plot, characters, or any concept..." required>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </form>
+                    <small class="text-muted">
+                        Examples: "books about time travel", "stories with strong female protagonists", "mystery novels set in small towns"
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div th:if="${searchResults}" class="row">
+            <div class="col-12">
+                <div class="search-results">
+                    <h4><i class="fas fa-lightbulb"></i> AI Search Results</h4>
+                    <div class="mb-3">
+                        <strong>Query:</strong> <span th:text="${query}"></span>
+                    </div>
+                    <p th:text="${searchResults}" style="white-space: pre-line;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Smart Search Features</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="search-card text-center">
+                            <div class="feature-icon text-warning">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h5>Semantic Search</h5>
+                            <p class="text-muted">Find books based on meaning and concepts, not just exact keywords. Understand context and intent.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="search-card text-center">
+                            <div class="feature-icon text-info">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <h5>Fuzzy Matching</h5>
+                            <p class="text-muted">Find books even with typos or partial matches. Flexible search that understands variations.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="search-card text-center">
+                            <div class="feature-icon text-success">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h5>AI Suggestions</h5>
+                            <p class="text-muted">Get intelligent search suggestions and related concepts to help you discover more books.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Tips -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="search-card">
+                    <h4 class="text-center mb-4">Search Tips</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Use natural language queries</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Describe themes and emotions</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mention character types</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Include setting preferences</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Describe plot elements</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mention reading mood</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="/" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/advanced-recommendations" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-brain"></i> AI Recommendations
+                </a>
+                <a href="/content-generation" class="btn btn-outline-success me-2">
+                    <i class="fas fa-magic"></i> Content Generation
+                </a>
+                <a href="/multi-language" class="btn btn-outline-info">
+                    <i class="fas fa-globe"></i> Multi-Language
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html> 
